@@ -92,20 +92,20 @@ function getNoiseVal(x, y, t) {
 // If frequency = 10, then the sine wave goes from -1 to 1 from input values 0 to 0.1
 // The sine wave then decreases from 1 to -1 and the input value goes from 0.1 to 0.2 and so on
 function transformNoise(x) {
-  const frequency = 5;
+  const frequency = 20;
 
   x *= frequency;
   x *= 2 * PI;
 
   let y = sin(x);
 
-  y = map(y, 0, 1, -1, 1);
+  // y = map(y, 0, 1, -1, 1);
 
-  if (y < 0) y = -y;
+  // if (y < 0) y = -y;
 
-  y = map(y, 0, 1, -1, 1);
+  // y = map(y, 0, 1, -1, 1);
 
-  return y;
+  return 1-y;
 }
 
 // Save PNG, SVG, and noise image when 's' is pressed
