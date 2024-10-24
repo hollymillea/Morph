@@ -1,4 +1,4 @@
-const canvasSize = [800, 1000];
+const canvasSize = [1600, 2000];
 const blocks = [1, 4];
 const sizeX = Math.floor(canvasSize[0] / blocks[0]);
 const sizeY = Math.floor(canvasSize[1] / blocks[1]);
@@ -38,7 +38,6 @@ function setup() {
 
 function createNoiseBlock(startX, startY, sizeX, sizeY, n) {
   for (let i = 0; i < sizeX; i++) {
-    console.log(0);
     for (let j = 0; j < sizeY; j++) {
       let x = startX + i;
       let y = startY + j;
@@ -67,7 +66,7 @@ function draw() {
 
 
 function getNoiseVal(x, y, t) {
-  const noiseZoom = 0.001;
+  const noiseZoom = 0.0005;
 
   let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.1);
 
@@ -83,7 +82,7 @@ function getNoiseVal(x, y, t) {
 // If frequency = 10, then the sine wave goes from -1 to 1 from input values 0 to 0.1
 // The sine wave then decreases from 1 to -1 and the input value goes from 0.1 to 0.2 and so on
 function transformNoise(x) {
-  const frequency = 5;
+  const frequency = 1;
 
   x *= frequency;
   x *= 2 * PI;
