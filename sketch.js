@@ -8,6 +8,7 @@ let noiseImg;
 
 const colour1 = [119, 136, 170];
 const colour2 = [21, 43, 85];
+const colour3 = [45, 68, 113];
 
 function setup() {
   createCanvas(canvasSize[0], canvasSize[1]);
@@ -47,9 +48,16 @@ function createNoiseBlock(startX, startY, sizeX, sizeY, n) {
       // A value between -1 and 1
       let noiseVal = getNoiseVal(i, j, n);
 
-      // Use noiseVal to interpolate between colour1 and colour2
-      let c = lerpColor(color(colour1), color(colour2), noiseVal);
+      var c;
 
+      // If n is odd then flip the colour
+      if (n % 2 == 0) {
+        // Use noiseVal to interpolate between colour1 and colour2
+        c = lerpColor(color(colour1), color(colour2), noiseVal);
+      }
+      else {
+        c = lerpColor(color(colour1), color(colour3), noiseVal);
+      }
 
       noiseImg.set(x, y, c);
     }
