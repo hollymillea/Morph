@@ -1,21 +1,34 @@
-const sizeX = 300;
-const sizeY = 400;
+const canvasSize = [800, 1000];
+const blocks = [1, 4];
+const sizeX = Math.floor(canvasSize[0] / blocks[0]);
+const sizeY = Math.floor(canvasSize[1] / blocks[1]);
 const margin = [0,0];
 const grid = [];
 let noiseImg;
 
 function setup() {
-  createCanvas(3508, 4961);
+  createCanvas(canvasSize[0], canvasSize[1]);
+  // createCanvas(350,496);
 
   // Create images to visualize the noise
-  noiseImg = createImage(sizeX, sizeY);
+  noiseImg = createImage(sizeX*blocks[0], sizeY*blocks[1]);
   noiseImg.loadPixels();
 
   // Where do we start and end drawing in terms of (x,y) pixels?
   const xStart = margin[0];
   const yStart = margin[1];
 
-  createNoiseBlock(sizeX, sizeY);
+  let n = 0;
+
+  for (let i = 0; i < blocks[0]; i++) {
+    for (let j = 0; j < blocks[1]; j++) {
+      const startX = i * sizeX;
+      const startY = j * sizeY;
+
+      createNoiseBlock(startX, startY, sizeX, sizeY, n);
+      n++;
+    }
+  }
 
   // Display the image
   image(noiseImg, xStart, yStart, sizeX, sizeY);
@@ -23,14 +36,18 @@ function setup() {
   noLoop(); // Prevents continuous drawing
 }
 
-function createNoiseBlock(sizeX, sizeY) {
+function createNoiseBlock(startX, startY, sizeX, sizeY, n) {
   for (let i = 0; i < sizeX; i++) {
+    console.log(0);
     for (let j = 0; j < sizeY; j++) {
-      let move = getNoiseVal(i, j);
+      let x = startX + i;
+      let y = startY + j;
+
+      let move = getNoiseVal(i, j, n);
 
       let noiseVal = map(move, -10, 10, 0, 255);
 
-      noiseImg.set(i, j, color(noiseVal));
+      noiseImg.set(x, y, color(noiseVal));
     }
   }
   noiseImg.updatePixels();
@@ -49,10 +66,10 @@ function draw() {
 }
 
 
-function getNoiseVal(x, y) {
-  const noiseZoom = 0.002;
+function getNoiseVal(x, y, t) {
+  const noiseZoom = 0.001;
 
-  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom);
+  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.1);
 
   noiseVal = transformNoise(noiseVal);
 
