@@ -81,7 +81,7 @@ function draw() {
 function getNoiseVal(x, y, t) {
   const noiseZoom = 0.0008;
 
-  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.02);
+  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.06);
 
   noiseVal = transformNoise(noiseVal);
   
