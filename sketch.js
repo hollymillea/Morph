@@ -3,7 +3,6 @@ const rows = 400;
 const margin = [300, 400];
 const grid = [];
 let noiseImg;
-let originalNoiseImg; // New image for original noise values
 
 function setup() {
   createCanvas(3508, 4961);
@@ -11,9 +10,6 @@ function setup() {
   // Create images to visualize the noise
   noiseImg = createImage(cols, rows);
   noiseImg.loadPixels();
-  
-  originalNoiseImg = createImage(cols, rows); // Initialize the original noise image
-  originalNoiseImg.loadPixels(); // Load pixels for the original noise image
 
   // Where do we start and end drawing in terms of (x,y) pixels?
   const xStart = margin[0];
@@ -36,49 +32,11 @@ function draw() {
   // Increase the stroke weight
   strokeWeight(8);
 
-  const [r, g, b] = [random(255), random(255), random(255)];
-  const [r2, g2, b2] = [random(255), random(255), random(255)];
-
-  // Halfway between the colours
-  const r3 = (r + r2) / 2;
-  const g3 = (g + g2) / 2;
-  const b3 = (b + b2) / 2;
-
-  const colours = [color(r, g, b, 255), color(r, g, b, 150)];
-
-  // Draw vertical lines
-  for (let i = 0; i < cols; i++) {
-    const columnCoordinates = grid[i];
-
-    beginShape();
-    columnCoordinates.forEach((point) => {
-      // curveVertex(point.x, point.y);
-    });
-    endShape();
-  }
-
-  // Draw horizontal lines
-  for (let i = 0; i < rows; i++) {
-    // Alternate the colour of the lines
-    const n = colours.length;
-    const colour = colours[i % n];
-    stroke(colour);
-
-    beginShape();
-
-    for (let j = 0; j < cols; j++) {
-      let p = grid[j][i];
-      curveVertex(p.x, p.y);
-    }
-
-    endShape();
-  }
+  // Draw the noise image
+  image(noiseImg, margin[0], margin[1], width - 2 * margin[0], height - 2 * margin[1]);
 }
 
 function createGridPoints(xStart, yStart, xStep, yStep) {
-  // What direction do we want to shift the points in?
-  const direction = createVector(1, 1);
-
   // For each column
   for (let i = 0; i < cols; i++) {
     let col = [];
@@ -95,11 +53,6 @@ function createGridPoints(xStart, yStart, xStep, yStep) {
       // We scale this noise value so that it's more visible
       move *= 15;
 
-      const newX = x + direction.x * move;
-      const newY = y + direction.y * move;
-
-      col.push(createVector(newX, newY));
-
       // Save noise value to the noise image
       let noiseVal = map(move, -10, 10, 0, 255);
       noiseImg.set(i, j, color(noiseVal));
@@ -108,17 +61,12 @@ function createGridPoints(xStart, yStart, xStep, yStep) {
     grid.push(col);
   }
   noiseImg.updatePixels();
-  originalNoiseImg.updatePixels(); // Update pixels for original noise image
 }
 
 function getNoiseVal(x, y, i, j) {
   const noiseZoom = 0.0002;
 
   let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom);
-
-  // Map noiseVal to a grayscale value and set it in the original noise image
-  let originalNoiseColor = map(noiseVal, 0, 1, 0, 255); // Map to [0, 255]
-  originalNoiseImg.set(i, j, color(originalNoiseColor)); // Set pixel for original noise image
 
   noiseVal = transformNoise(noiseVal);
   
@@ -150,9 +98,6 @@ function keyPressed() {
   if (key === 's') {
     // Save as PNG
     saveCanvas('output', 'png');
-
-    // Save the original noise image
-    originalNoiseImg.save('original_noise', 'png');
 
     // Save the transformed noise image
     noiseImg.save('noise', 'png');
