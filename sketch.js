@@ -6,9 +6,9 @@ const margin = [0,0];
 const grid = [];
 let noiseImg;
 
-const colour1 = [119, 136, 170];
-const colour2 = [21, 43, 85];
-const colour3 = [45, 68, 113];
+const colour1 = [51, 30, 12];
+const colour2 = [170, 108, 57];
+const colour3 = colour2;
 
 function setup() {
   createCanvas(canvasSize[0], canvasSize[1]);
@@ -81,7 +81,7 @@ function draw() {
 function getNoiseVal(x, y, t) {
   const noiseZoom = 0.0008;
 
-  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.08);
+  let noiseVal = noise((x + 0) * noiseZoom, (y + 0) * noiseZoom, t*0.02);
 
   noiseVal = transformNoise(noiseVal);
   
@@ -92,20 +92,22 @@ function getNoiseVal(x, y, t) {
 // If frequency = 10, then the sine wave goes from -1 to 1 from input values 0 to 0.1
 // The sine wave then decreases from 1 to -1 and the input value goes from 0.1 to 0.2 and so on
 function transformNoise(x) {
-  const frequency = 20;
+  const frequency = 2;
 
   x *= frequency;
   x *= 2 * PI;
 
   let y = sin(x);
 
-  // y = map(y, 0, 1, -1, 1);
+  // y = map(y, -1, 1, 0, 1);
 
-  // if (y < 0) y = -y;
+  y = map(y, 0, 1, -1, 1);
 
-  // y = map(y, 0, 1, -1, 1);
+  if (y < 0) y = -y;
 
-  return 1-y;
+  y = map(y, 0, 1, -1, 1);
+
+  return y;
 }
 
 // Save PNG, SVG, and noise image when 's' is pressed
