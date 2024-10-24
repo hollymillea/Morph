@@ -6,12 +6,11 @@ const margin = [0,0];
 const grid = [];
 let noiseImg;
 
-const colour1 = [183,204,102];
-const colour2 = [65,82,0];
+const colour1 = [119, 136, 170];
+const colour2 = [21, 43, 85];
 
 function setup() {
   createCanvas(canvasSize[0], canvasSize[1]);
-  // createCanvas(350,496);
 
   // Create images to visualize the noise
   noiseImg = createImage(sizeX*blocks[0], sizeY*blocks[1]);
